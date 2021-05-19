@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using Furion;
 using Furion.Authorization;
 using Furion.DataEncryption;
+using Furion.FileProviderSystem;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WebApplication.Config;
+using WebApplication.Helper;
 using WebApplication.Models;
 using WebApplication.Services;
 
@@ -82,8 +87,12 @@ namespace WebApplication.Controllers
 			HttpContext.Response.Cookies.Append("Authorization", accessToken);
 			HttpContext.Response.Cookies.Delete("X-Authorization");
 			HttpContext.Response.Cookies.Append("X-Authorization", refreshToken);
-			//return View("~/Home/Index");
-			return Content("ok");
+			//绝对路径
+			//IFileProvider htFile = FS.GetPhysicalFileProvider("`/wwwroot");
+			string rootPath = App.WebHostEnvironment.WebRootPath;
+			string fileCon = FileHelper.ReadFileToEnd(Path.Combine(rootPath, "home.html"));
+			return Content(fileCon, EncodingType.HTML);
+			//return View("~/Views/Home/Index.cshtml");
 		}
 
 		[HttpGet, AllowAnonymous]

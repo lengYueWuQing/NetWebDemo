@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using WebApplication.Config;
@@ -48,7 +49,7 @@ namespace WebApplication
 				options.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 				//options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 			});
-			
+
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,20 +72,28 @@ namespace WebApplication
 			});
 
 			app.UseHttpsRedirection();
-			app.UseStaticFiles();
+			app.UseStaticFiles(); 
 			app.UseSerilogRequestLogging();    // 必须在 UseStaticFiles 和 UseRouting 之间  Serilog注册
 			app.UseRouting();
 			app.UseCorsAccessor();  //跨域
 			app.UseAuthorization();
 
 			app.UseInject();
-			
+			// 添加规范化结果状态码，需要在这里注册 （401 403 状态重写默认）
+			app.UseUnifyResultStatusCodes();
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllerRoute(
 					name: "default",
 					pattern: "{controller=Home}/{action=Index}/{id?}");
 			});
-		}
+            // 配置模块化静态资源
+            /*app.UseFileServer(new FileServerOptions
+            {
+                FileProvider = new PhysicalFileProvider(""),
+                RequestPath = "/login",  // 后续所有资源都是通过 /模块名称/xxx.css 调用
+                EnableDirectoryBrowsing = true   //浏览器浏览到所有文件
+            });*/
+        }
 	}
 }
