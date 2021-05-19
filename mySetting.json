@@ -1,0 +1,8 @@
+{
+	//业务需要的配置可以写在这里
+	"AppInfo": {
+		"Name": "Furion01",
+		"Version": null,
+		"Company": "com"
+	}
+}
