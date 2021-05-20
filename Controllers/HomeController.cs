@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Furion;
 using Furion.Authorization;
 using Furion.DataEncryption;
-using Furion.FileProviderSystem;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;

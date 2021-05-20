@@ -50,7 +50,7 @@ namespace WebApplication
 				options.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 				//options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 			});
-			services.AddSqlSugar(new ConnectionConfig
+			/*services.AddSqlSugar(new ConnectionConfig
 			{
 				ConnectionString = App.Configuration["ConnectionStrings:SqlServerConnectionString"],//连接符字串
 				DbType = DbType.SqlServer,
@@ -76,7 +76,7 @@ namespace WebApplication
 				{
 					return new KeyValuePair<string, SugarParameter[]>(sql, pars);
 				};
-			});
+			});*/
 
 		}
 
@@ -100,7 +100,8 @@ namespace WebApplication
 			});
 
 			app.UseHttpsRedirection();
-			app.UseStaticFiles(); 
+			// 默认静态资源调用，wwwroot
+			//app.UseStaticFiles(); 
 			app.UseSerilogRequestLogging();    // 必须在 UseStaticFiles 和 UseRouting 之间  Serilog注册
 			app.UseRouting();
 			app.UseCorsAccessor();  //跨域
@@ -116,12 +117,12 @@ namespace WebApplication
 					pattern: "{controller=Home}/{action=Index}/{id?}");
 			});
             // 配置模块化静态资源
-            /*app.UseFileServer(new FileServerOptions
+            app.UseFileServer(new FileServerOptions
             {
-                FileProvider = new PhysicalFileProvider(""),
-                RequestPath = "/login",  // 后续所有资源都是通过 /模块名称/xxx.css 调用
+                FileProvider = new PhysicalFileProvider(App.WebHostEnvironment.WebRootPath),
+                RequestPath = "/static",  // 后续所有资源都是通过 /模块名称/xxx.css 调用
                 EnableDirectoryBrowsing = true   //浏览器浏览到所有文件
-            });*/
+            });
         }
 	}
 }
