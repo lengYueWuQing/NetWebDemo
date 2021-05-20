@@ -15,8 +15,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SqlSugar;
 using WebApplication.Config;
 using WebApplication.Helper;
+using WebApplication.Entitys;
 using WebApplication.Models;
 using WebApplication.Services;
 
@@ -27,7 +29,10 @@ namespace WebApplication.Controllers
 		private readonly ILogger<HomeController> _logger;
 		private readonly TestServices _testServices;
 		private readonly AppInfoOptions _options;
-		public HomeController(ILogger<HomeController> logger, TestServices testServices, IOptionsMonitor<AppInfoOptions> optionsMonitor)
+		private readonly ISqlSugarRepository repository; // 仓储对象：封装简单的CRUD
+		private readonly SqlSugarClient db; // 核心对象：拥有完整的SqlSugar全部功能
+		public HomeController(ILogger<HomeController> logger, TestServices testServices, IOptionsMonitor<AppInfoOptions> optionsMonitor
+			, ISqlSugarRepository sqlSugarRepository)
 		{
 			_logger = logger;
 			_testServices = testServices;
@@ -44,6 +49,8 @@ namespace WebApplication.Controllers
 
 		public IActionResult Privacy()
 		{
+			int total = 0;
+			//db.Queryable<AIS_MockBuildingInRoute>().Select(c => c.BuildingID > 1).ToPagedList(1, 2, ref total);
 			return View();
 		}
 

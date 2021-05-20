@@ -7,6 +7,7 @@ using Furion.DependencyInjection;
 using Furion.FriendlyException;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Exceptions
@@ -26,13 +27,25 @@ namespace WebApplication.Exceptions
         public Task OnExceptionAsync(ExceptionContext context)
         {
             // 写日志
-            _logger.LogError("异常: {0}", context.Exception);
+            string path = string.Empty;
+            RouteValueDictionary values = context.RouteData.Values;
+            foreach (object key in values.Keys) {
+                path += @"["+key.ToString()+":"+ values[key.ToString()] + @"] ";
+            }
+            _logger.LogError(path + " 异常: {0}", context.Exception);
             if (context.ExceptionHandled == false) {
+                string errors = App.Configuration["FriendlyExceptionSettings:DefaultErrorMessage"];
+                String message = context.Exception.Message;
+                //修改的数据不是最新版本
+                if (message.Contains("SqlSugar.VersionExceptions") && message.Contains("Not the latest version")) {
+                    errors = "修改的非最新数据，请刷新页面后再修改";
+                }
+                
                 // 设置结果
                 context.Result = new JsonResult(new UnifyResResult
                 {
-                    status = UnifyResResult.OK,
-                    errors = App.Configuration["FriendlyExceptionSettings:DefaultErrorMessage"],
+                    status = UnifyResResult.NO,
+                    errors = errors,
                     data = null,
                     timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
                     //Extras = UnifyContext.Take(),

@@ -1,0 +1,5 @@
+{
+	"ConnectionStrings": {
+		"SqlServerConnectionString": "Data Source=172.60.0.103;Initial Catalog=OES_LBS_OE;Persist Security Info=false;User ID=sa;Password=OTIS.2013"
+	}
+}
