@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Furion;
-
+using Furion.Logging.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using SqlSugar;
 using WebApplication.Config;
 using WebApplication.Exceptions;
 
@@ -48,7 +49,34 @@ namespace WebApplication
 				options.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 				//options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 			});
-			
+			services.AddSqlSugar(new ConnectionConfig
+			{
+				ConnectionString = App.Configuration["ConnectionStrings:SqlServerConnectionString"],//连接符字串
+				DbType = DbType.SqlServer,
+				IsAutoCloseConnection = true,
+				InitKeyType = InitKeyType.Attribute//从特性读取主键自增信息
+			},
+			db =>
+			{
+				//处理日志事务 sql执行前
+				db.Aop.OnLogExecuting = (sql, pars) =>
+				{
+					//记录log
+					string sqlStr = sql + System.Environment.NewLine + string.Join(",", pars?.Select(it => it.ParameterName + ":" + it.Value));
+					sqlStr.LogDebug("LogShow");
+				};
+				db.Aop.OnError = (exp) =>//SQL报错
+				{
+					//记录错误log
+					string sqlStr = exp.Sql + System.Environment.NewLine + exp.Parametres.ToString()+ System.Environment.NewLine+ exp.Message;
+					sqlStr.LogDebug("LogShow");
+				};
+				db.Aop.OnExecutingChangeSql = (sql, pars) => //可以修改SQL和参数的值
+				{
+					return new KeyValuePair<string, SugarParameter[]>(sql, pars);
+				};
+			});
+
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

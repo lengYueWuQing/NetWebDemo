@@ -5,9 +5,52 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Furion" Version="2.4.6" />
-    <PackageReference Include="Furion.Extras.Authentication.JwtBearer" Version="2.4.6" />
-    <PackageReference Include="Furion.Extras.Logging.Serilog" Version="2.4.6" />
+    <Compile Remove="Entitys\LBS_Region.cs" />
+    <Compile Remove="Entitys\LBS_Release.cs" />
+    <Compile Remove="Entitys\LBS_ReportLog.cs" />
+    <Compile Remove="Entitys\LBS_RouteEx.cs" />
+    <Compile Remove="Entitys\LBS_RP_AdjustmentBranch.cs" />
+    <Compile Remove="Entitys\LBS_RP_AdjustmentCA.cs" />
+    <Compile Remove="Entitys\LBS_RP_AdjustmentDepot.cs" />
+    <Compile Remove="Entitys\LBS_RP_AdjustmentSupervisor.cs" />
+    <Compile Remove="Entitys\LBS_RP_AdjustmentZone.cs" />
+    <Compile Remove="Entitys\LBS_RP_CMTBranch.cs" />
+    <Compile Remove="Entitys\LBS_RP_CMTCA.cs" />
+    <Compile Remove="Entitys\LBS_RP_CMTDepot.cs" />
+    <Compile Remove="Entitys\LBS_RP_CMTSupervisor.cs" />
+    <Compile Remove="Entitys\LBS_RP_CMTZone.cs" />
+    <Compile Remove="Entitys\LBS_RP_CsftBranch.cs" />
+    <Compile Remove="Entitys\LBS_RP_CsftCA.cs" />
+    <Compile Remove="Entitys\LBS_RP_CsftDepot.cs" />
+    <Compile Remove="Entitys\LBS_RP_CsftSupervisor.cs" />
+    <Compile Remove="Entitys\LBS_RP_CsftZone.cs" />
+    <Compile Remove="Entitys\LBS_RP_ItemPgsBranch.cs" />
+    <Compile Remove="Entitys\LBS_RP_ItemPgsCA.cs" />
+    <Compile Remove="Entitys\LBS_RP_ItemPgsDepot.cs" />
+    <Compile Remove="Entitys\LBS_RP_ItemPgsSupervisor.cs" />
+    <Compile Remove="Entitys\LBS_RP_ItemPgsZone.cs" />
+    <Compile Remove="Entitys\LBS_RP_LaborBranch.cs" />
+    <Compile Remove="Entitys\LBS_RP_LaborCA.cs" />
+    <Compile Remove="Entitys\LBS_RP_LaborDepot.cs" />
+    <Compile Remove="Entitys\LBS_RP_LaborSupervisor.cs" />
+    <Compile Remove="Entitys\LBS_RP_LaborZone.cs" />
+    <Compile Remove="Entitys\LBS_RP_MorSupervisor.cs" />
+    <Compile Remove="Entitys\LBS_RP_NLaborBranch.cs" />
+    <Compile Remove="Entitys\LBS_RP_NLaborCA.cs" />
+    <Compile Remove="Entitys\LBS_RP_NLaborDepot.cs" />
+    <Compile Remove="Entitys\LBS_RP_NLaborSupervisor.cs" />
+    <Compile Remove="Entitys\LBS_RP_NLaborZone.cs" />
+    <Compile Remove="Entitys\LBS_RP_PrcBranch.cs" />
+    <Compile Remove="Entitys\LBS_RP_PrcCA.cs" />
+    <Compile Remove="Entitys\LBS_RP_PrcDepot.cs" />
+    <Compile Remove="Entitys\LBS_RP_PrcSupervisor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Furion" Version="2.6.0" />
+    <PackageReference Include="Furion.Extras.Authentication.JwtBearer" Version="2.6.0" />
+    <PackageReference Include="Furion.Extras.DatabaseAccessor.SqlSugar" Version="2.6.0" />
+    <PackageReference Include="Furion.Extras.Logging.Serilog" Version="2.6.0" />
     <PackageReference Include="UAParser" Version="3.1.46" />
   </ItemGroup>
 
