@@ -36,6 +36,8 @@ namespace WebApplication.Controllers
 			_logger = logger;
 			_testServices = testServices;
 			_options = optionsMonitor.CurrentValue;
+			repository = sqlSugarRepository;
+			db = repository.Context;    // 推荐操作
 		}
 
 		public IActionResult Index()
@@ -48,8 +50,7 @@ namespace WebApplication.Controllers
 
 		public IActionResult Privacy()
 		{
-			int total = 0;
-			//db.Queryable<AIS_MockBuildingInRoute>().Select(c => c.BuildingID > 1).ToPagedList(1, 2, ref total);
+			db.Queryable<AIS_MockBuildingInRoute>().Select(c => c.BuildingID > 1).ToPagedList(1, 2);
 			return View();
 		}
 
