@@ -50,7 +50,7 @@ namespace WebApplication
 				options.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 				//options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 			});
-			/*services.AddSqlSugar(new ConnectionConfig
+			services.AddSqlSugar(new ConnectionConfig
 			{
 				ConnectionString = App.Configuration["ConnectionStrings:SqlServerConnectionString"],//连接符字串
 				DbType = DbType.SqlServer,
@@ -76,7 +76,7 @@ namespace WebApplication
 				{
 					return new KeyValuePair<string, SugarParameter[]>(sql, pars);
 				};
-			});*/
+			});
 
 		}
 
